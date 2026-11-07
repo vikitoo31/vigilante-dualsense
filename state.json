@@ -1,1 +1,22 @@
-{}
+{
+  "ps-es-blanco": {
+    "status": "unavailable",
+    "since": "2026-11-07T10:21:34.838Z"
+  },
+  "ps-es-negro": {
+    "status": "unavailable",
+    "since": "2026-11-07T10:21:34.838Z"
+  },
+  "game": {
+    "status": "unavailable",
+    "since": "2026-11-07T10:21:34.838Z"
+  },
+  "pressstart": {
+    "status": "unavailable",
+    "since": "2026-11-07T10:21:34.838Z"
+  },
+  "impactgame": {
+    "status": "unavailable",
+    "since": "2026-11-07T10:21:34.838Z"
+  }
+}
