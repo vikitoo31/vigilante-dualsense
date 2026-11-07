@@ -1,0 +1,46 @@
+name: Vigilar DualSense GTA VI
+
+on:
+  schedule:
+    - cron: '*/5 * * * *' # cada 5 minutos (GitHub puede retrasarlo algún minuto)
+  workflow_dispatch:
+    inputs:
+      test:
+        description: 'Enviar una notificación de prueba'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write # para guardar state.json y no repetir avisos
+
+concurrency:
+  group: stock-check
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Revisar tiendas
+        run: node check-stock.mjs
+        env:
+          NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+          TEST_NOTIFICATION: ${{ inputs.test }}
+
+      - name: Guardar estado si ha cambiado
+        run: |
+          if ! git diff --quiet state.json; then
+            git config user.name "stock-bot"
+            git config user.email "stock-bot@users.noreply.github.com"
+            git add state.json
+            git commit -m "Actualizar estado de stock"
+            git pull --rebase
+            git push
+          fi
